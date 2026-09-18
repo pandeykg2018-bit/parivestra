@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import type { CSSProperties } from 'react'
 import {
   ArrowUpRight,
   BarChart3,
@@ -53,14 +54,22 @@ export default function Page() {
   const [activeAgent, setActiveAgent] = useState(0)
   const [submitted, setSubmitted] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [pointer, setPointer] = useState({ x: 0, y: 0 })
 
   const handleSubmit = () => {
     if (query.trim()) setSubmitted(true)
   }
 
   return (
-    <main className="site-shell">
+    <main className="site-shell" onPointerMove={(event) => { const rect = event.currentTarget.getBoundingClientRect(); setPointer({ x: (event.clientX - rect.left) / rect.width - 0.5, y: (event.clientY - rect.top) / rect.height - 0.5 }) }}>
       <div className="ambient ambient-one" />
+      <div className="earth-scene" aria-hidden="true" style={{ '--earth-x': `${pointer.x * 18}px`, '--earth-y': `${pointer.y * 12}px` } as CSSProperties}>
+        <div className="earth-haze" />
+        <div className="earth-orbit orbit-one" />
+        <div className="earth-orbit orbit-two" />
+        <div className="earth" />
+        <div className="earth-shine" />
+      </div>
       <div className="ambient ambient-two" />
       <header className="nav-wrap">
         <nav className="nav glass-panel" aria-label="Main navigation">
