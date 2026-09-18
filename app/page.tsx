@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import type { CSSProperties } from 'react'
+import { useState } from 'react'
 import {
   ArrowUpRight,
   BarChart3,
@@ -27,7 +26,7 @@ const agents = [
     description: 'Finds the highest-impact opportunities hiding in your search data.',
     icon: BarChart3,
     accent: 'mint',
-    metrics: ['INPUTS / Search data', 'TOOLS / GSC · GA4'],
+    metrics: ['+28% CTR', '14 opportunities'],
   },
   {
     name: 'Reputation Monitor',
@@ -35,7 +34,7 @@ const agents = [
     description: 'Tracks the conversations shaping how your market sees you.',
     icon: Network,
     accent: 'violet',
-    metrics: ['INPUTS / Brand context', 'OUTPUT / Signal brief'],
+    metrics: ['2.4k mentions', 'Live signal'],
   },
   {
     name: 'Campaign Analyst',
@@ -43,7 +42,7 @@ const agents = [
     description: 'Turns scattered performance data into your next best move.',
     icon: Target,
     accent: 'blue',
-    metrics: ['TOOLS / GA4 · Ads', 'OUTPUT / Action plan'],
+    metrics: ['8 channels', 'Weekly brief'],
   },
 ]
 
@@ -54,32 +53,14 @@ export default function Page() {
   const [activeAgent, setActiveAgent] = useState(0)
   const [submitted, setSubmitted] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [pointer, setPointer] = useState({ x: 0, y: 0 })
-  const [scrollY, setScrollY] = useState(0)
-
-  useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   const handleSubmit = () => {
     if (query.trim()) setSubmitted(true)
   }
 
   return (
-    <main className="site-shell" onPointerMove={(event) => { const rect = event.currentTarget.getBoundingClientRect(); setPointer({ x: (event.clientX - rect.left) / rect.width - 0.5, y: (event.clientY - rect.top) / rect.height - 0.5 }) }}>
+    <main className="site-shell">
       <div className="ambient ambient-one" />
-      <div className="earth-scene" aria-hidden="true" style={{ '--earth-x': `${pointer.x * 18}px`, '--earth-y': `${pointer.y * 12 - scrollY * 0.08}px`, '--earth-scale': `${1 - Math.min(scrollY / 1800, 0.08)}` } as CSSProperties}>
-        <div className="earth-haze" />
-        <div className="earth-orbit orbit-one" />
-        <div className="earth-orbit orbit-two" />
-        <div className="earth" />
-        <div className="earth-clouds" />
-        <div className="earth-shine" />
-        <div className="signal-node node-a" />
-        <div className="signal-node node-b" />
-      </div>
       <div className="ambient ambient-two" />
       <header className="nav-wrap">
         <nav className="nav glass-panel" aria-label="Main navigation">
