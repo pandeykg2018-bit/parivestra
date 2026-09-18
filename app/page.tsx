@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { CSSProperties } from 'react'
 import {
   ArrowUpRight,
@@ -27,7 +27,7 @@ const agents = [
     description: 'Finds the highest-impact opportunities hiding in your search data.',
     icon: BarChart3,
     accent: 'mint',
-    metrics: ['+28% CTR', '14 opportunities'],
+    metrics: ['INPUTS / Search data', 'TOOLS / GSC · GA4'],
   },
   {
     name: 'Reputation Monitor',
@@ -35,7 +35,7 @@ const agents = [
     description: 'Tracks the conversations shaping how your market sees you.',
     icon: Network,
     accent: 'violet',
-    metrics: ['2.4k mentions', 'Live signal'],
+    metrics: ['INPUTS / Brand context', 'OUTPUT / Signal brief'],
   },
   {
     name: 'Campaign Analyst',
@@ -43,7 +43,7 @@ const agents = [
     description: 'Turns scattered performance data into your next best move.',
     icon: Target,
     accent: 'blue',
-    metrics: ['8 channels', 'Weekly brief'],
+    metrics: ['TOOLS / GA4 · Ads', 'OUTPUT / Action plan'],
   },
 ]
 
@@ -55,6 +55,13 @@ export default function Page() {
   const [submitted, setSubmitted] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [pointer, setPointer] = useState({ x: 0, y: 0 })
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const handleSubmit = () => {
     if (query.trim()) setSubmitted(true)
@@ -63,12 +70,15 @@ export default function Page() {
   return (
     <main className="site-shell" onPointerMove={(event) => { const rect = event.currentTarget.getBoundingClientRect(); setPointer({ x: (event.clientX - rect.left) / rect.width - 0.5, y: (event.clientY - rect.top) / rect.height - 0.5 }) }}>
       <div className="ambient ambient-one" />
-      <div className="earth-scene" aria-hidden="true" style={{ '--earth-x': `${pointer.x * 18}px`, '--earth-y': `${pointer.y * 12}px` } as CSSProperties}>
+      <div className="earth-scene" aria-hidden="true" style={{ '--earth-x': `${pointer.x * 18}px`, '--earth-y': `${pointer.y * 12 - scrollY * 0.08}px`, '--earth-scale': `${1 - Math.min(scrollY / 1800, 0.08)}` } as CSSProperties}>
         <div className="earth-haze" />
         <div className="earth-orbit orbit-one" />
         <div className="earth-orbit orbit-two" />
         <div className="earth" />
+        <div className="earth-clouds" />
         <div className="earth-shine" />
+        <div className="signal-node node-a" />
+        <div className="signal-node node-b" />
       </div>
       <div className="ambient ambient-two" />
       <header className="nav-wrap">
